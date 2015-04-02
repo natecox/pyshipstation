@@ -4,7 +4,7 @@ from setuptools import setup
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='pyshipstation',
+    name='shipstation',
     author='Nathan Cox',
     author_email='akujin@akujin.com',
     classifiers=[
@@ -21,7 +21,7 @@ setup(
     include_package_data=True,
     install_requires=['requests'],
     license='MIT',
-    packages=['pyshipstation'],
+    packages=['shipstation'],
     url='https://github.com/natecox/pyshipstation',
     version='0.1'
 )
