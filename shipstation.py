@@ -1,5 +1,5 @@
+from django.conf import settings
 import requests
-
 
 class ShipStation:
     """
@@ -14,16 +14,20 @@ class ShipStation:
         self.url = 'https://ssapi.shipstation.com'
 
         if key is None:
-            raise AttributeError('Key must be supplied.')
+            self.key = settings.SHIPSTATION_SETTINGS.get('key')
+            if self.key is None:
+                raise AttributeError('Key must be supplied.')
         else:
             self.key = key
 
         if secret is None:
-            raise AttributeError('Secret must be supplied.')
+            self.secret = settings.SHIPSTATION_SETTINGS.get('secret')
+            if self.key is None:
+                raise AttributeError('Key must be supplied.')
         else:
             self.secret = secret
 
     def get(self, endpoint):
-        url = '{}/{}'.format(self.url, endpoint)
-        r = requests.get(url, auth=(self.secret, self.key))
-        print r
+        url = '{}{}'.format(self.url, endpoint)
+        r = requests.get(url, auth=(self.key, self.secret))
+        print r.json()
