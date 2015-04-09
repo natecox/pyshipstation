@@ -6,12 +6,12 @@ This package provides the basic API bindings for interacting with
 pyshipstation provides the class `ShipStation` to instantiate a new connection
 to ShipStation.
 
-    import shipstation
+    from shipstation.api import *
 
     api_key = '[your key]'
     api_secret = '[your secret]'
 
-    ss = shipstation.ShipStation(key=api_key, secret=api_secret)
+    ss = ShipStation(key=api_key, secret=api_secret)
     
 ## ShipStationOrder
 Orders can be provided using the `ShipStationOrder` class.
@@ -21,7 +21,7 @@ only `order_number` is actually required. ShipStation will generate a unique
 key for you on submission.
 
     id = '[a reference number]'
-    ss_order = shipstation.ShipStationOrder(order_number=id)
+    ss_order = ShipStationOrder(order_number=id)
     
 ### Setting The Order Status
 Order status is set using the `set_status` method.
@@ -40,8 +40,8 @@ Customer username and email can be set with the `set_customer_deails` method.
 Addresses are represented as a `ShipStationAddress` instance, and set
 using the `set_shipping_address` or `set_billing_address` method.
 
-    shipping_address = shipstation.ShipStationAddress(...)
-    billing_address = shipstation.ShipStationAddress(...)
+    shipping_address = ShipStationAddress(...)
+    billing_address = ShipStationAddress(...)
     
     ss_order.set_shipping_address(shipping_address)
     ss_order.set_billing_address(billing_address)
@@ -50,21 +50,21 @@ using the `set_shipping_address` or `set_billing_address` method.
 Package dimensions are represented as a `ShipStationContainer` instance, and
 set using the `set_dimensions` method.
 
-    container = shipstation.ShipStationContainer(...)
+    container = ShipStationContainer(...)
     ss_order.set_dimensions(container)
     
 ### Adding Line Items
 Line items are represented as a `ShipStationItem` instance, and are added
 individually using the `add_item` method.
 
-    item = shipstation.ShipStationItem(...)
+    item = ShipStationItem(...)
     ss_order.add_item(item)
     
 ## ShipStationWeight
 This corresponds to the Weight model in ShipStation, and accepts
 `units` and `value`.
 
-    weight = shipstation.ShipStationWeight(units='ounces', value=12)
+    weight = ShipStationWeight(units='ounces', value=12)
     
 ## ShipStationContainer
 This corresponds to the Dimensions model in ShipStation. 
@@ -72,8 +72,8 @@ This corresponds to the Dimensions model in ShipStation.
 Weight is represented as a `ShipStationWeight` instance and added via the 
 `set_weight` method.
 
-    weight = shipstation.ShipStationWeight(...)
-    ss_container = shipstation.ShipStationContainer(
+    weight = ShipStationWeight(...)
+    ss_container = ShipStationContainer(
         units='inches',
         length=5,
         width=5,
@@ -87,7 +87,7 @@ This corresponds to the Product model in ShipStation.
 Weight is represented as a `ShipStationWeight` instance and added via the 
 `set_weight` method.
 
-    weight = shipstation.ShipStationWeight(...)
+    weight = ShipStationWeight(...)
     ss_item = ShipStationItem(
         sku='[your sku]',
         name='[item name]',

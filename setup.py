@@ -22,6 +22,6 @@ setup(
     include_package_data=True,
     install_requires=['requests>=2.6.0'],
     license='MIT',
-    py_modules=['shipstation'],
+    packages=['shipstation'],
     url='https://github.com/natecox/pyshipstation',
 )
