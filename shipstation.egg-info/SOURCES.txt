@@ -1,7 +1,6 @@
 setup.cfg
 setup.py
 shipstation/__init__.py
-shipstation/shipstation.py
 shipstation.egg-info/PKG-INFO
 shipstation.egg-info/SOURCES.txt
 shipstation.egg-info/dependency_links.txt
