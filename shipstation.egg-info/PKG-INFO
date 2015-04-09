@@ -1,0 +1,18 @@
+Metadata-Version: 1.1
+Name: shipstation
+Version: 0.1
+Summary: Bindings for the ShipStation API in Python
+Home-page: https://github.com/natecox/pyshipstation
+Author: Nathan Cox
+Author-email: akujin@akujin.com
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Internet :: WWW/HTTP
