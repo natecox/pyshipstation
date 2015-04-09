@@ -1,6 +1,4 @@
 import json
-import pprint
-from django.conf import settings
 import requests
 
 
@@ -249,22 +247,15 @@ class ShipStation:
         :return:
         """
 
+        if key is None:
+            raise AttributeError('Key must be supplied.')
+        if secret is None:
+            raise AttributeError('Secret must be supplied.')
+
         self.url = 'https://ssapi.shipstation.com'
 
-        if key is None:
-            self.key = settings.SHIPSTATION_SETTINGS.get('key')
-            if self.key is None:
-                raise AttributeError('Key must be supplied.')
-        else:
-            self.key = key
-
-        if secret is None:
-            self.secret = settings.SHIPSTATION_SETTINGS.get('secret')
-            if self.key is None:
-                raise AttributeError('Key must be supplied.')
-        else:
-            self.secret = secret
-
+        self.key = key
+        self.secret = secret
         self.orders = []
 
     def add_order(self, order):
@@ -287,14 +278,10 @@ class ShipStation:
 
     def post(self, endpoint='', data=None):
         url = '{}{}'.format(self.url, endpoint)
-        headers = {
-            'content-type': 'application/json'
-        }
-        r = requests.post(
+        headers = {'content-type': 'application/json'}
+        requests.post(
             url,
             auth=(self.key, self.secret),
             data=data,
             headers=headers
         )
-
-        pprint.pprint(r.json())
