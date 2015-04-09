@@ -17,9 +17,9 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP'
     ],
-    description='API bindings for the ShipStation API in Python',
+    description='Bindings for the ShipStation API in Python',
     include_package_data=True,
-    install_requires=['requests'],
+    install_requires=['requests>=2.6.0'],
     license='MIT',
     packages=['shipstation'],
     url='https://github.com/natecox/pyshipstation',

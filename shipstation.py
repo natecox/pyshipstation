@@ -23,7 +23,7 @@ class ShipStationBase(object):
 
 
 class ShipStationWeight(ShipStationBase):
-    def __init__(self, units, value):
+    def __init__(self, units=None, value=None):
         self.units = units
         self.value = value
 
@@ -120,6 +120,7 @@ class ShipStationOrder(ShipStationBase):
     )
 
     def __init__(self, order_key=None, order_number=None):
+
         # Required attributes
         self.order_number = order_number
         self.order_date = None
@@ -150,7 +151,7 @@ class ShipStationOrder(ShipStationBase):
         self.international_options = None
         self.advanced_options = None
 
-    def set_status(self, status):
+    def set_status(self, status=None):
         if not status:
             self.order_status = None
         elif status not in self.ORDER_STATUS_VALUES:
@@ -158,11 +159,11 @@ class ShipStationOrder(ShipStationBase):
         else:
             self.order_status = status
 
-    def set_customer_details(self, username, email):
+    def set_customer_details(self, username=None, email=None):
         self.customer_username = username
         self.customer_email = email
 
-    def set_shipping_address(self, shipping_address):
+    def set_shipping_address(self, shipping_address=None):
         if type(shipping_address) is not ShipStationAddress:
             raise AttributeError('Should be type ShipStationAddress')
 
@@ -259,6 +260,8 @@ class ShipStation:
         self.orders = []
 
     def add_order(self, order):
+        if type(order) is not ShipStationOrder:
+            raise AttributeError('Should be type ShipStationOrder')
         self.orders.append(order)
 
     def get_orders(self):
