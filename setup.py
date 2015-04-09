@@ -5,6 +5,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='shipstation',
+    version='0.0.5',
     author='Nathan Cox',
     author_email='akujin@akujin.com',
     classifiers=[
@@ -21,6 +22,6 @@ setup(
     include_package_data=True,
     install_requires=['requests>=2.6.0'],
     license='MIT',
+    py_modules=['shipstation'],
     url='https://github.com/natecox/pyshipstation',
-    version='0.0.4'
 )
