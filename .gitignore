@@ -1,4 +1,5 @@
 *.pyc
+*.sublime-*
 dist
 shipstation.egg-info
 .tox

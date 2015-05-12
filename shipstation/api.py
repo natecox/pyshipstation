@@ -111,6 +111,7 @@ class ShipStationOrder(ShipStationBase):
         'cancelled'
     )
 
+    # TODO: add method for adding confirmation which respects these values.
     CONFIRMATION_VALUES = (
         'none',
         'delivery',

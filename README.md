@@ -12,6 +12,13 @@ to ShipStation.
     api_secret = '[your secret]'
 
     ss = ShipStation(key=api_key, secret=api_secret)
+
+## Sending Orders to ShipStation
+Once you have a `ShipStation` object and a `ShipStationOrder` ready, you can
+send the order to the ShipStation API like so:
+
+    ss.add_order(...)
+    ss.submit_orders();
     
 ## ShipStationOrder
 Orders can be provided using the `ShipStationOrder` class.
