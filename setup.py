@@ -23,5 +23,5 @@ setup(
     install_requires=['requests>=2.6.0'],
     license='MIT',
     packages=['shipstation'],
-    url='https://github.com/natecox/pyshipstation',
+    url='https://github.com/natecox/pyshipstation'
 )
