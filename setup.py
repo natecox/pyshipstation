@@ -5,7 +5,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='shipstation',
-    version='0.0.611',
+    version='0.0.612',
     author='Nathan Cox',
     author_email='akujin@akujin.com',
     classifiers=[
