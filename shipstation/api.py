@@ -1,5 +1,7 @@
 import json
 import requests
+import pprint
+import datetime
 from decimal import Decimal
 
 
@@ -205,7 +207,7 @@ class ShipStationOrder(ShipStationBase):
 
         # Required attributes
         self.order_number = order_number
-        self.order_date = None
+        self.order_date = datetime.datetime.now().isoformat()
         self.order_status = None
         self.bill_to = None
         self.ship_to = None
@@ -216,9 +218,9 @@ class ShipStationOrder(ShipStationBase):
         self.customer_username = None
         self.customer_email = None
         self.items = []
-        self.amount_paid = None
-        self.tax_amount = None
-        self.shipping_amount = None
+        self.amount_paid = Decimal('0')
+        self.tax_amount = Decimal('0')
+        self.shipping_amount = Decimal('0')
         self.customer_notes = None
         self.internal_notes = None
         self.gift = None
@@ -281,6 +283,12 @@ class ShipStationOrder(ShipStationBase):
         else:
             return None
 
+    def set_order_date(self, date):
+        self.order_date = date
+
+    def get_order_date(self):
+        return self.order_date
+
     def get_weight(self):
         weight = 0
         items = self.get_items()
@@ -339,7 +347,7 @@ class ShipStation:
     Handles the details of connecting to and querying a ShipStation account.
     """
 
-    def __init__(self, key=None, secret=None):
+    def __init__(self, key=None, secret=None, debug=False):
         """
         Connecting to ShipStation required an account and a
         :return:
@@ -355,6 +363,8 @@ class ShipStation:
         self.key = key
         self.secret = secret
         self.orders = []
+
+        self.debug = debug
 
     def add_order(self, order):
         if type(order) is not ShipStationOrder:
@@ -374,14 +384,17 @@ class ShipStation:
     def get(self, endpoint=''):
         url = '{}{}'.format(self.url, endpoint)
         r = requests.get(url, auth=(self.key, self.secret))
-        print r.json()
+        if self.debug:
+            pprint.PrettyPrinter(indent=4).pprint(r.json())
 
     def post(self, endpoint='', data=None):
         url = '{}{}'.format(self.url, endpoint)
         headers = {'content-type': 'application/json'}
-        requests.post(
+        r = requests.post(
             url,
             auth=(self.key, self.secret),
             data=data,
             headers=headers
         )
+        if self.debug:
+            pprint.PrettyPrinter(indent=4).pprint(r.json())
