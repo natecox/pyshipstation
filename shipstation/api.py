@@ -1,5 +1,8 @@
 import json
 import requests
+import pprint
+import datetime
+from decimal import Decimal
 
 
 class ShipStationBase(object):
@@ -18,6 +21,86 @@ class ShipStationBase(object):
                 d[key] = None
             else:
                 d[key] = str(value)
+
+        return d
+
+
+class ShipStationCustomsItem(ShipStationBase):
+    def __init__(self,
+                 description=None,
+                 quantity=1,
+                 value=Decimal('0'),
+                 harmonized_tariff_code=None,
+                 country_of_origin=None):
+        self.description = description
+        self.quantity = quantity
+        self.value = value
+        self.harmonized_tariff_code = harmonized_tariff_code
+        self.country_of_origin = country_of_origin
+
+        if not self.description:
+            raise AttributeError('description may not be empty')
+        if not self.harmonized_tariff_code:
+            raise AttributeError('harmonized_tariff_code may not be empty')
+        if not self.country_of_origin:
+            raise AttributeError('country_of_origin may not be empty')
+        if len(self.country_of_origin) is not 2:
+            raise AttributeError('country_of_origin must be two characters')
+        if not isinstance(value, Decimal):
+            raise AttributeError('value must be decimal')
+
+
+class ShipStationInternationalOptions(ShipStationBase):
+    CONTENTS_VALUES = (
+        'merchandise',
+        'documents',
+        'gift',
+        'returned_goods',
+        'sample'
+    )
+
+    NON_DELIVERY_OPTIONS = (
+        'return_to_sender',
+        'treat_as_abandoned'
+    )
+
+    def __init__(self, contents=None, non_delivery=None):
+        self.customs_items = []
+        self.set_contents(contents)
+        self.set_non_delivery(non_delivery)
+
+    def set_contents(self, contents):
+        if contents:
+            if contents not in self.CONTENTS_VALUES:
+                raise AttributeError('contents value not valid')
+            self.contents = contents
+        else:
+            self.contents = None
+
+    def add_customs_item(self, customs_item):
+        if customs_item:
+            if not isinstance(customs_item, ShipStationCustomsItem):
+                raise AttributeError('must be of type ShipStationCustomsItem')
+            self.customs_items.append(customs_item)
+
+    def get_items(self):
+        return self.customs_items
+
+    def get_items_as_dicts(self):
+        return [x.as_dict() for x in self.customs_items]
+
+    def set_non_delivery(self, non_delivery):
+        if non_delivery:
+            if non_delivery not in self.NON_DELIVERY_OPTIONS:
+                raise AttributeError('non_delivery value is not valid')
+            self.non_delivery = non_delivery
+        else:
+            self.non_delivery = None
+
+    def as_dict(self):
+        d = super(ShipStationInternationalOptions, self).as_dict()
+
+        d['customsItems'] = self.get_items_as_dicts()
 
         return d
 
@@ -124,7 +207,7 @@ class ShipStationOrder(ShipStationBase):
 
         # Required attributes
         self.order_number = order_number
-        self.order_date = None
+        self.order_date = datetime.datetime.now().isoformat()
         self.order_status = None
         self.bill_to = None
         self.ship_to = None
@@ -135,9 +218,9 @@ class ShipStationOrder(ShipStationBase):
         self.customer_username = None
         self.customer_email = None
         self.items = []
-        self.amount_paid = None
-        self.tax_amount = None
-        self.shipping_amount = None
+        self.amount_paid = Decimal('0')
+        self.tax_amount = Decimal('0')
+        self.shipping_amount = Decimal('0')
         self.customer_notes = None
         self.internal_notes = None
         self.gift = None
@@ -200,6 +283,12 @@ class ShipStationOrder(ShipStationBase):
         else:
             return None
 
+    def set_order_date(self, date):
+        self.order_date = date
+
+    def get_order_date(self):
+        return self.order_date
+
     def get_weight(self):
         weight = 0
         items = self.get_items()
@@ -226,6 +315,20 @@ class ShipStationOrder(ShipStationBase):
     def get_items_as_dicts(self):
         return [x.as_dict() for x in self.items]
 
+    def set_international_options(self, options):
+        if not isinstance(options, ShipStationInternationalOptions):
+            raise AttributeError(
+                'options should be an instance of ' +
+                'ShipStationInternationalOptions'
+            )
+        self.international_options = options
+
+    def get_international_options_as_dict(self):
+        if self.international_options:
+            return self.international_options.as_dict()
+        else:
+            return None
+
     def as_dict(self):
         d = super(ShipStationOrder, self).as_dict()
 
@@ -234,6 +337,7 @@ class ShipStationOrder(ShipStationBase):
         d['billTo'] = self.get_billing_address_as_dict()
         d['shipTo'] = self.get_shipping_address_as_dict()
         d['weight'] = self.get_weight()
+        d['internationalOptions'] = self.get_international_options_as_dict()
 
         return d
 
@@ -243,7 +347,7 @@ class ShipStation:
     Handles the details of connecting to and querying a ShipStation account.
     """
 
-    def __init__(self, key=None, secret=None):
+    def __init__(self, key=None, secret=None, debug=False):
         """
         Connecting to ShipStation required an account and a
         :return:
@@ -259,6 +363,8 @@ class ShipStation:
         self.key = key
         self.secret = secret
         self.orders = []
+
+        self.debug = debug
 
     def add_order(self, order):
         if type(order) is not ShipStationOrder:
@@ -278,14 +384,17 @@ class ShipStation:
     def get(self, endpoint=''):
         url = '{}{}'.format(self.url, endpoint)
         r = requests.get(url, auth=(self.key, self.secret))
-        print r.json()
+        if self.debug:
+            pprint.PrettyPrinter(indent=4).pprint(r.json())
 
     def post(self, endpoint='', data=None):
         url = '{}{}'.format(self.url, endpoint)
         headers = {'content-type': 'application/json'}
-        requests.post(
+        r = requests.post(
             url,
             auth=(self.key, self.secret),
             data=data,
             headers=headers
         )
+        if self.debug:
+            pprint.PrettyPrinter(indent=4).pprint(r.json())
