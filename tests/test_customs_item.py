@@ -1,10 +1,13 @@
-import unittest
-from nose.tools import raises
-from shipstation.api import *
 from decimal import Decimal
+from unittest import TestCase
+from nose.tools import raises
+
+from shipstation.api import (ShipStation, ShipStationOrder,
+                             ShipStationInternationalOptions,
+                             ShipStationCustomsItem)
 
 
-class ShipStationTests(unittest.TestCase):
+class ShipStationCustomsItemTests(TestCase):
 
     def setUp(self):
         self.ss = ShipStation('123', '456')
