@@ -19,12 +19,6 @@ class ShipStationTests(unittest.TestCase):
             country_of_origin='US'
         )
 
-    def tearDown(self):
-        self.ss = None
-        self.ss_order = None
-        self.ss_intl = None
-        self.ss_customs_item = None
-
     def test_order_accepts_international_options(self):
         self.ss_intl.add_customs_item(self.ss_customs_item)
         self.ss_intl.set_contents('documents')
