@@ -65,3 +65,21 @@ class ShipStationTests(unittest.TestCase):
             harmonized_tariff_code='test',
             country_of_origin='something_else'
         )
+
+    @raises(AttributeError)
+    def test_customs_item_must_have_decimal_value_not_string(self):
+        ShipStationCustomsItem(
+            description='test',
+            harmonized_tariff_code='test',
+            country_of_origin='us',
+            value='test'
+        )
+
+    @raises(AttributeError)
+    def test_customs_item_must_have_decimal_value_not_integer(self):
+        ShipStationCustomsItem(
+            description='test',
+            harmonized_tariff_code='test',
+            country_of_origin='us',
+            value=1
+        )
