@@ -39,3 +39,10 @@ class ShipStationTests(unittest.TestCase):
     def test_international_options_non_delivery_must_be_valid(self):
         self.ss_intl.set_non_delivery('something_else')
 
+    @raises(AttributeError)
+    def test_international_options_item_must_be_valid(self):
+        self.ss_intl.add_customs_item('something_else')
+
+    def test_international_options_get_items(self):
+        self.ss_intl.add_customs_item(self.ss_customs_item)
+        self.assertEqual(self.ss_intl.get_items(), [self.ss_customs_item])
