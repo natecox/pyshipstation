@@ -15,7 +15,7 @@ class ShipStationBase(object):
     def as_dict(self):
         d = dict()
 
-        for key, value in self.__dict__.iteritems():
+        for key, value in self.__dict__.items():
             key = self.to_camel_case(key)
             if value is None:
                 d[key] = None
