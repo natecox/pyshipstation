@@ -387,6 +387,7 @@ class ShipStation:
         r = requests.get(url, auth=(self.key, self.secret))
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+        return r
 
     def post(self, endpoint='', data=None):
         url = '{}{}'.format(self.url, endpoint)
@@ -399,3 +400,4 @@ class ShipStation:
         )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+        return r
