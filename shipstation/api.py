@@ -271,15 +271,6 @@ class ShipStationOrder(ShipStationBase):
         else:
             return None
 
-    def set_advanced_options(self, advanced_options):
-        self.advanced_options = advanced_options
-
-    def get_advanced_options_as_dict(self):
-        if self.advanced_options:
-            return self.advanced_options.as_dict()
-        else:
-            return None
-
     def set_dimensions(self, dimensions):
         if type(dimensions) is not ShipStationContainer:
             raise AttributeError('Should be type ShipStationContainer')
