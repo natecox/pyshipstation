@@ -338,7 +338,7 @@ class ShipStationOrder(ShipStationBase):
         d['shipTo'] = self.get_shipping_address_as_dict()
         d['weight'] = self.get_weight()
         d['internationalOptions'] = self.get_international_options_as_dict()
-        d['advancedOptions'] = self.get_advanced_options_as_dict()
+        d['advancedOptions'] = self.advanced_options
 
         return d
 
