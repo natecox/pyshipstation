@@ -376,11 +376,13 @@ class ShipStation:
         return self.orders
 
     def submit_orders(self):
+        result = []
         for order in self.orders:
-            self.post(
+            result.append(self.post(
                 endpoint='/orders/createorder',
                 data=json.dumps(order.as_dict())
-            )
+            ))
+        return result
 
     def get(self, endpoint=''):
         url = '{}{}'.format(self.url, endpoint)
