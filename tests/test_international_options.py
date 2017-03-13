@@ -1,10 +1,13 @@
-import unittest
-from nose.tools import raises
-from shipstation.api import *
 from decimal import Decimal
+from unittest import TestCase
+from nose.tools import raises
+
+from shipstation.api import (ShipStation, ShipStationOrder,
+                             ShipStationInternationalOptions,
+                             ShipStationCustomsItem)
 
 
-class ShipStationTests(unittest.TestCase):
+class ShipStationIntlOptionsTests(TestCase):
 
     def setUp(self):
         self.ss = ShipStation('123', '456')
@@ -18,12 +21,6 @@ class ShipStationTests(unittest.TestCase):
             harmonized_tariff_code='code',
             country_of_origin='US'
         )
-
-    def tearDown(self):
-        self.ss = None
-        self.ss_order = None
-        self.ss_intl = None
-        self.ss_customs_item = None
 
     def test_order_accepts_international_options(self):
         self.ss_intl.add_customs_item(self.ss_customs_item)
@@ -45,3 +42,10 @@ class ShipStationTests(unittest.TestCase):
     def test_international_options_non_delivery_must_be_valid(self):
         self.ss_intl.set_non_delivery('something_else')
 
+    @raises(AttributeError)
+    def test_international_options_item_must_be_valid(self):
+        self.ss_intl.add_customs_item('something_else')
+
+    def test_international_options_get_items(self):
+        self.ss_intl.add_customs_item(self.ss_customs_item)
+        self.assertEqual(self.ss_intl.get_items(), [self.ss_customs_item])

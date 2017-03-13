@@ -1,10 +1,13 @@
-import unittest
-from nose.tools import raises
-from shipstation.api import *
 from decimal import Decimal
+from unittest import TestCase
+from nose.tools import raises
+
+from shipstation.api import (ShipStation, ShipStationOrder,
+                             ShipStationInternationalOptions,
+                             ShipStationCustomsItem)
 
 
-class ShipStationTests(unittest.TestCase):
+class ShipStationCustomsItemTests(TestCase):
 
     def setUp(self):
         self.ss = ShipStation('123', '456')
@@ -25,12 +28,6 @@ class ShipStationTests(unittest.TestCase):
             harmonized_tariff_code='code',
             country_of_origin='US'
         )
-
-    def tearDown(self):
-        self.ss = None
-        self.ss_order = None
-        self.ss_intl = None
-        self.ss_customs_item = None
 
     def test_intl_options_accepts_customs_item(self):
         self.ss_intl.add_customs_item(self.ss_customs_item1)
@@ -70,4 +67,22 @@ class ShipStationTests(unittest.TestCase):
             description='test',
             harmonized_tariff_code='test',
             country_of_origin='something_else'
+        )
+
+    @raises(AttributeError)
+    def test_customs_item_must_have_decimal_value_not_string(self):
+        ShipStationCustomsItem(
+            description='test',
+            harmonized_tariff_code='test',
+            country_of_origin='us',
+            value='test'
+        )
+
+    @raises(AttributeError)
+    def test_customs_item_must_have_decimal_value_not_integer(self):
+        ShipStationCustomsItem(
+            description='test',
+            harmonized_tariff_code='test',
+            country_of_origin='us',
+            value=1
         )
