@@ -20,6 +20,7 @@ class ShipStationBase(object):
             if value is None:
                 d[key] = None
             else:
+                if type(value) == unicode: value = value.encode('ascii', errors='replace')                
                 d[key] = str(value)
 
         return d
