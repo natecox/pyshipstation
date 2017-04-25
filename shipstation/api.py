@@ -403,3 +403,10 @@ class ShipStation:
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
         return r
+
+    def delete(self, endpoint=''):
+        url = '{}{}'.format(self.url, endpoint)
+        r = requests.delete(url, auth=(self.key, self.secret))
+        if self.debug:
+            pprint.PrettyPrinter(indent=4).pprint(r.json())
+        return r
