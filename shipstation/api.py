@@ -379,8 +379,8 @@ class ShipStation:
         url = '/orders/{}'.format(order_id)
         r = self.get(endpoint=url)
 
-        if response.ok:
-            return response.json()
+        if r.ok:
+            return r.json()
         return None
 
     def submit_orders(self):
