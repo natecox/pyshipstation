@@ -338,6 +338,7 @@ class ShipStationOrder(ShipStationBase):
         d['shipTo'] = self.get_shipping_address_as_dict()
         d['weight'] = self.get_weight()
         d['internationalOptions'] = self.get_international_options_as_dict()
+        d['advancedOptions'] = self.advanced_options
 
         return d
 
@@ -374,18 +375,33 @@ class ShipStation:
     def get_orders(self):
         return self.orders
 
+    def get_order(self, order_id):
+        url = '/orders/{}'.format(order_id)
+        r = self.get(endpoint=url)
+
+        if response.ok:
+            return response.json()
+        return None
+
+    def get_order_shipping_status(self, order_id):
+        order = self.get_order(order_id)
+        return order.get('orderStatus')
+
     def submit_orders(self):
+        result = []
         for order in self.orders:
-            self.post(
+            result.append(self.post(
                 endpoint='/orders/createorder',
                 data=json.dumps(order.as_dict())
-            )
+            ))
+        return result
 
     def get(self, endpoint=''):
         url = '{}{}'.format(self.url, endpoint)
         r = requests.get(url, auth=(self.key, self.secret))
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+        return r
 
     def post(self, endpoint='', data=None):
         url = '{}{}'.format(self.url, endpoint)
@@ -398,3 +414,11 @@ class ShipStation:
         )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+        return r
+
+    def delete(self, endpoint=''):
+        url = '{}{}'.format(self.url, endpoint)
+        r = requests.delete(url, auth=(self.key, self.secret))
+        if self.debug:
+            pprint.PrettyPrinter(indent=4).pprint(r.json())
+        return r
