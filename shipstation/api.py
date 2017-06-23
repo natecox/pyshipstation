@@ -383,10 +383,6 @@ class ShipStation:
             return response.json()
         return None
 
-    def get_order_shipping_status(self, order_id):
-        order = self.get_order(order_id)
-        return order.get('orderStatus')
-
     def submit_orders(self):
         result = []
         for order in self.orders:
