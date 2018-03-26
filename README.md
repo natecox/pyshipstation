@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/natecox/pyshipstation.svg?branch=develop)](https://travis-ci.org/natecox/pyshipstation)
+
 # Shipstation API Python Bindings
 This package provides the basic API bindings for interacting with
 [ShipStation](http://www.shipstation.com/) via Python.
