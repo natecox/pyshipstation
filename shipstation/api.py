@@ -398,3 +398,30 @@ class ShipStation:
         )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+    
+    def download(self):
+    """
+    All of the available filters are optional. They do not need to be included in the URL if not used.
+    """
+    endpoint = '/orders?customerName={customerName}\
+    &itemKeyword={itemKeyword}\
+    &createDateStart={createDateStart}\
+    &createDateEnd={createDateEnd}\
+    &modifyDateStart={modifyDateStart}\
+    &modifyDateEnd={modifyDateEnd}\
+    &orderDateStart={orderDateStart}\
+    &orderDateEnd={orderDateEnd}\
+    &orderNumber={orderNumber}\
+    &orderStatus={orderStatus}\
+    &paymentDateStart={paymentDateStart}\
+    &paymentDateEnd={paymentDateEnd}\
+    &storeId={storeId}\
+    &sortBy={sortBy}\
+    &sortDir={sortDir}\
+    &page={page}\
+    &pageSize={pageSize}'
+    url = '{}{}'.format(self.url, endpoint)
+    headers = {'content-type': 'application/json'}
+    r = requests.get(url, auth=(api_key, api_secret))
+    print(r.status_code)
+    print(r.text)
