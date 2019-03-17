@@ -16,3 +16,14 @@ class ShipStationAddress(ShipStationBase):
         self.country = country
         self.phone = phone
         self.residential = residential
+
+        if not self.street1:
+            raise AttributeError('Street1 may not be empty')
+        if not self.city:
+            raise AttributeError('City may not be empty')
+        if not self.state:
+            raise AttributeError('State may not be empty')
+        if not self.postal_code:
+            raise AttributeError('Postal code may not be empty')
+        if residential and not isinstance(residential, bool):
+            raise AttributeError('Residential must be bool or empty')
