@@ -23,6 +23,7 @@ setup(
     description='Bindings for the ShipStation API in Python',
     include_package_data=True,
     install_requires=['requests>=2.6.0'],
+    tests_require=['nose'],
     license='MIT',
     packages=['shipstation'],
     url='https://github.com/natecox/pyshipstation'
