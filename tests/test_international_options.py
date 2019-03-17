@@ -3,6 +3,9 @@ from nose.tools import raises
 from shipstation.api import *
 from decimal import Decimal
 
+from shipstation.data.internationalOptions import ShipStationInternationalOptions
+from shipstation.data.customsItem import ShipStationCustomsItem
+
 
 class ShipStationTests(unittest.TestCase):
 
@@ -44,4 +47,3 @@ class ShipStationTests(unittest.TestCase):
     @raises(AttributeError)
     def test_international_options_non_delivery_must_be_valid(self):
         self.ss_intl.set_non_delivery('something_else')
-
