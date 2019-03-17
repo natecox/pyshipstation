@@ -21,7 +21,6 @@ class ShipStationOrder(ShipStationBase):
         'cancelled'
     )
 
-    # TODO: add method for adding confirmation which respects these values.
     CONFIRMATION_VALUES = (
         'none',
         'delivery',
@@ -69,6 +68,14 @@ class ShipStationOrder(ShipStationBase):
             raise AttributeError('Invalid status value')
         else:
             self.order_status = status
+
+    def set_confirmation(self, confirmation=None):
+        if not confirmation:
+            self.confirmation = None
+        elif confirmation not in self.CONFIRMATION_VALUES:
+            raise AttributeError('Invalid confirmation value')
+        else:
+            self.confirmation = confirmation
 
     def set_customer_details(self, username=None, email=None):
         self.customer_username = username
