@@ -342,10 +342,30 @@ class ShipStationOrder(ShipStationBase):
         return d
 
 
-class ShipStation:
+class ShipStation(ShipStationBase):
     """
     Handles the details of connecting to and querying a ShipStation account.
     """
+
+    ORDER_LIST_PARAMETERS = (
+        'customer_name',
+        'item_keyword',
+        'create_date_start',
+        'create_date_end',
+        'modify_date_start',
+        'modify_date_end',
+        'order_date_start',
+        'order_date_end',
+        'order_number',
+        'order_status',
+        'payment_date_start',
+        'payment_date_end',
+        'store_id',
+        'sort_by',
+        'sort_dir',
+        'page',
+        'page_size'
+    )
 
     def __init__(self, key=None, secret=None, debug=False):
         """
@@ -381,9 +401,9 @@ class ShipStation:
                 data=json.dumps(order.as_dict())
             )
 
-    def get(self, endpoint=''):
+    def get(self, endpoint='', payload=None):
         url = '{}{}'.format(self.url, endpoint)
-        r = requests.get(url, auth=(self.key, self.secret))
+        r = requests.get(url, auth=(self.key, self.secret), params=payload)
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
 
@@ -398,3 +418,23 @@ class ShipStation:
         )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+
+    def fetch_orders(self, parameters_dict=None):
+        invalid_parameters = []
+
+        if parameters_dict is None:
+            parameters_dict = {}
+        else:
+            invalid_parameters = [
+                key for key in parameters_dict.keys() if key not in self.ORDER_LIST_PARAMETERS
+            ]
+
+        if not invalid_parameters:
+            valid_parameters = {self.to_camel_case(key): value for key, value in parameters_dict.items()}
+        else:
+            raise AttributeError('Invalid order list parameters %s' % invalid_parameters)
+
+        self.get(
+            endpoint='/orders/list',
+            payload=valid_parameters
+        )
