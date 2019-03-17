@@ -2,7 +2,15 @@ import json
 import requests
 import pprint
 
-from shipstation.data.order import ShipStationOrder
+from shipstation.data.order import *
+
+# Imports below to keep backwards compatibility.
+from shipstation.data.address import *
+from shipstation.data.customsItem import *
+from shipstation.data.dimensions import *
+from shipstation.data.internationalOptions import *
+from shipstation.data.orderItem import *
+from shipstation.data.weight import *
 
 
 class ShipStation:
