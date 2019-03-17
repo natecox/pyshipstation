@@ -13,7 +13,7 @@ class ShipStationCustomsItem(ShipStationBase):
         self.quantity = quantity
         self.value = value
         self.harmonized_tariff_code = harmonized_tariff_code
-        self.country_of_origin = country_of_origin
+        self.country_of_origin = country_of_origin.upper()
 
         if not self.description:
             raise AttributeError('description may not be empty')
