@@ -15,13 +15,13 @@ class ShipStationAddressTest(unittest.TestCase):
             'state': 'AK',
             'postal_code': '12345',
             'country': 'US',
-            'phone': '123-456-7890',
-            'residential': True
+            'residential': True,
+            'phone': '123-456-7890'
         }
 
         self.ss_address = ShipStationAddress(**self.json)
 
-        self.assertEqual(json.dumps(self.ss_address.__dict__), json.dumps(self.json))
+        self.assertDictEqual(self.ss_address.__dict__, self.json)
 
     @raises(AttributeError)
     def test_address_must_have_street1(self):
