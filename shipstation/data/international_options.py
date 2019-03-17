@@ -1,5 +1,5 @@
 from shipstation.data.base import ShipStationBase
-from shipstation.data.customsItem import ShipStationCustomsItem
+from shipstation.data.customs_item import ShipStationCustomsItem
 
 
 class ShipStationInternationalOptions(ShipStationBase):

@@ -6,10 +6,10 @@ from shipstation.data.order import *
 
 # Imports below to keep backwards compatibility.
 from shipstation.data.address import *
-from shipstation.data.customsItem import *
+from shipstation.data.customs_item import *
 from shipstation.data.dimensions import *
-from shipstation.data.internationalOptions import *
-from shipstation.data.orderItem import *
+from shipstation.data.international_options import *
+from shipstation.data.order_item import *
 from shipstation.data.weight import *
 
 

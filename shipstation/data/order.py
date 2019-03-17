@@ -4,7 +4,7 @@ from decimal import Decimal
 from shipstation.data.base import ShipStationBase
 from shipstation.data.address import ShipStationAddress
 from shipstation.data.dimensions import ShipStationContainer
-from shipstation.data.internationalOptions import ShipStationInternationalOptions
+from shipstation.data.international_options import ShipStationInternationalOptions
 
 
 class ShipStationOrder(ShipStationBase):

@@ -3,8 +3,8 @@ from nose.tools import raises
 from shipstation.api import *
 from decimal import Decimal
 
-from shipstation.data.internationalOptions import ShipStationInternationalOptions
-from shipstation.data.customsItem import ShipStationCustomsItem
+from shipstation.data.international_options import ShipStationInternationalOptions
+from shipstation.data.customs_item import ShipStationCustomsItem
 
 
 class ShipStationTests(unittest.TestCase):
