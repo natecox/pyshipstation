@@ -178,7 +178,7 @@ The allowed filter list is:
         sort_by,
         sort_dir,
         page,
-        page_size`.
+        page_size.
 
 Syntax for using a filter:
 

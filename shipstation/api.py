@@ -175,7 +175,6 @@ class ShipStationAddress(ShipStationBase):
         self.city = city
         self.state = state
         self.postal_code = postal_code
-        self.country = country.upper()
         self.phone = phone
         self.residential = residential
 
@@ -419,19 +418,22 @@ class ShipStation(ShipStationBase):
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
 
-    def fetch_orders(self, parameters_dict=None):
-        invalid_parameters = []
+    def fetch_orders(self, parameters={}):
+        """
+            Query and fetch existing orders from ShipStation
 
-        if parameters_dict is None:
-            parameters_dict = {}
-        else:
-            invalid_parameters = [
-                key for key in parameters_dict.keys() if key not in self.ORDER_LIST_PARAMETERS
-            ]
+            Args:
+                parameters (dict): Dict of filters to filter by.
 
-        if not invalid_parameters:
-            valid_parameters = {self.to_camel_case(key): value for key, value in parameters_dict.items()}
-        else:
+            Returns: JSON string of the returned matching orders.
+
+            Raises:
+                AttributeError: parameters not of type dict
+                AttributeError: invalid key in parameters dict.
+
+            Examples:
+                >>> ss.fetch_orders(parameters={'order_status': 'shipped', 'page': '2'})
+        """
             raise AttributeError('Invalid order list parameters %s' % invalid_parameters)
 
         self.get(

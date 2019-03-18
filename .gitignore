@@ -5,3 +5,4 @@ shipstation.egg-info
 .tox
 .idea
 build/lib/*
+
