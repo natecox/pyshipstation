@@ -51,7 +51,7 @@ class ShipStationOrderItemTest(unittest.TestCase):
 
     def test_order_item_must_set_weight_correctly(self):
         self.order_item = ShipStationItem()
-        self.order_item.set_weight(weight=ShipStationWeight(value=1))
+        self.order_item.set_weight(weight=ShipStationWeight(units='grams', value=1))
 
         print(self.order_item)
 
