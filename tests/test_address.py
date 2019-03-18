@@ -24,39 +24,9 @@ class ShipStationAddressTest(unittest.TestCase):
         self.assertDictEqual(self.ss_address.__dict__, self.json)
 
     @raises(AttributeError)
-    def test_address_must_have_street1(self):
+    def test_address_must_have_name(self):
         ShipStationAddress(
-            street1='',
-            city='some city',
-            state='some state',
-            postal_code='some zip'
-        )
-
-    @raises(AttributeError)
-    def test_address_must_have_city(self):
-        ShipStationAddress(
-            street1='123 main st',
-            city='',
-            state='some state',
-            postal_code='some zip'
-        )
-
-    @raises(AttributeError)
-    def test_address_must_have_state(self):
-        ShipStationAddress(
-            street1='123 main st',
-            city='some city',
-            state='',
-            postal_code='some zip'
-        )
-
-    @raises(AttributeError)
-    def test_address_must_have_postal_code(self):
-        ShipStationAddress(
-            street1='123 main st',
-            city='some city',
-            state='some state',
-            postal_code=''
+            name=''
         )
 
     @raises(AttributeError)

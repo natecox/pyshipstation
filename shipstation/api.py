@@ -190,6 +190,11 @@ class ShipStationAddress(ShipStationBase):
         self.phone = phone
         self.residential = residential
 
+        if not name:
+            raise AttributeError('Name must not be empty')
+        if residential and not isinstance(residential, bool):
+            raise AttributeError('Residential must be bool or empty')
+
 
 class ShipStationOrder(ShipStationBase):
     """
