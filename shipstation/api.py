@@ -135,10 +135,10 @@ class ShipStationContainer(ShipStationBase):
 
 
 class ShipStationItem(ShipStationBase):
-    def __init__(self, key=None, sku=None, name=None, image_url=None,
-                 quantity=None, unit_price=None, warehouse_location=None,
-                 options=None):
-        self.key = key
+    def __init__(self, line_item_key=None, sku=None, name=None,
+                 image_url=None, quantity=None, unit_price=None,
+                 warehouse_location=None, options=None):
+        self.line_item_key = line_item_key
         self.sku = sku
         self.name = name
         self.image_url = image_url
