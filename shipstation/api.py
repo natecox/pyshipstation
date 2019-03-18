@@ -110,6 +110,12 @@ class ShipStationWeight(ShipStationBase):
         self.units = units
         self.value = value
 
+        if not value or not isinstance(value, (int, float, Decimal)):
+            raise AttributeError('Value must not be empty and must be a number')
+        if not units or units not in ['pounds', 'ounces', 'grams']:
+            raise AttributeError('Units must not be empty and be `pounds`, `ounces` or `grams`')
+
+
 
 class ShipStationContainer(ShipStationBase):
     def __init__(self, units=None, length=None, width=None, height=None):
