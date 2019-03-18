@@ -434,7 +434,18 @@ class ShipStation(ShipStationBase):
             Examples:
                 >>> ss.fetch_orders(parameters={'order_status': 'shipped', 'page': '2'})
         """
+
+        if not isinstance(parameters, dict):
+            raise AttributeError("`parameters` must be of type dict")
+
+        invalid_parameters = [
+            key for key in parameters.keys() if key not in self.ORDER_LIST_PARAMETERS
+        ]
+
+        if invalid_parameters:
             raise AttributeError('Invalid order list parameters %s' % invalid_parameters)
+
+        valid_parameters = {self.to_camel_case(key): value for key, value in parameters.items()}
 
         self.get(
             endpoint='/orders/list',
