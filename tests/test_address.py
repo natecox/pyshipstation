@@ -23,7 +23,6 @@ class ShipStationAddressTest(unittest.TestCase):
 
         self.assertDictEqual(self.ss_address.__dict__, self.json)
 
-
     @raises(AttributeError)
     def test_address_residential_is_bool_or_empty(self):
         ShipStationAddress(
