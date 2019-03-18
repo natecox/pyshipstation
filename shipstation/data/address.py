@@ -13,19 +13,17 @@ class ShipStationAddress(ShipStationBase):
         self.city = city
         self.state = state
         self.postal_code = postal_code
-        self.country = country.upper()
         self.phone = phone
         self.residential = residential
 
-        if not street1:
-            raise AttributeError('Street1 may not be empty')
-        if not city:
-            raise AttributeError('City may not be empty')
-        if not state:
-            raise AttributeError('State may not be empty')
-        if not postal_code:
-            raise AttributeError('Postal code may not be empty')
+        if country:
+            self.country = country.upper()
+        else:
+            self.country = None
+
+        if not name:
+            raise AttributeError('Name must not be empty')
         if residential and not isinstance(residential, bool):
             raise AttributeError('Residential must be bool or empty')
-        if len(country) is not 2:
+        if country and len(country) is not 2:
             raise AttributeError('Country must be two characters')
