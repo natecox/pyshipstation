@@ -119,6 +119,17 @@ class ShipStationContainer(ShipStationBase):
         self.height = height
         self.weight = None
 
+        if not units:
+            raise AttributeError('Units must not be empty')
+        if units not in ['inches', 'centimeters']:
+            raise AttributeError('Units must be `inches` or `centimeters`')
+        if not isinstance(length, (Decimal, int, float)):
+            raise AttributeError('Length must be a number')
+        if not isinstance(width, (Decimal, int, float)):
+            raise AttributeError('Length must be a number')
+        if not isinstance(height, (Decimal, int, float)):
+            raise AttributeError('Length must be a number')
+
     def set_weight(self, weight):
         if type(weight) is not ShipStationWeight:
             raise AttributeError('Should be type ShipStationWeight')
