@@ -425,8 +425,6 @@ class ShipStation(ShipStationBase):
             Args:
                 parameters (dict): Dict of filters to filter by.
 
-            Returns: JSON string of the returned matching orders.
-
             Raises:
                 AttributeError: parameters not of type dict
                 AttributeError: invalid key in parameters dict.
@@ -438,12 +436,12 @@ class ShipStation(ShipStationBase):
         if not isinstance(parameters, dict):
             raise AttributeError("`parameters` must be of type dict")
 
-        invalid_parameters = [
-            key for key in parameters.keys() if key not in self.ORDER_LIST_PARAMETERS
-        ]
+        invalid_keys = set(parameters.keys()).difference(self.ORDER_LIST_PARAMETERS)
 
-        if invalid_parameters:
-            raise AttributeError('Invalid order list parameters %s' % invalid_parameters)
+        if invalid_keys:
+            raise AttributeError("Invalid order list parameters: {}".format(
+                ", ".join(invalid_keys)
+            ))
 
         valid_parameters = {self.to_camel_case(key): value for key, value in parameters.items()}
 
