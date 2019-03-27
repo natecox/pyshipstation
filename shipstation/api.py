@@ -175,7 +175,6 @@ class ShipStationAddress(ShipStationBase):
         self.city = city
         self.state = state
         self.postal_code = postal_code
-        self.country = country
         self.phone = phone
         self.residential = residential
 
@@ -342,10 +341,30 @@ class ShipStationOrder(ShipStationBase):
         return d
 
 
-class ShipStation:
+class ShipStation(ShipStationBase):
     """
     Handles the details of connecting to and querying a ShipStation account.
     """
+
+    ORDER_LIST_PARAMETERS = (
+        'customer_name',
+        'item_keyword',
+        'create_date_start',
+        'create_date_end',
+        'modify_date_start',
+        'modify_date_end',
+        'order_date_start',
+        'order_date_end',
+        'order_number',
+        'order_status',
+        'payment_date_start',
+        'payment_date_end',
+        'store_id',
+        'sort_by',
+        'sort_dir',
+        'page',
+        'page_size'
+    )
 
     def __init__(self, key=None, secret=None, debug=False):
         """
@@ -381,9 +400,9 @@ class ShipStation:
                 data=json.dumps(order.as_dict())
             )
 
-    def get(self, endpoint=''):
+    def get(self, endpoint='', payload=None):
         url = '{}{}'.format(self.url, endpoint)
-        r = requests.get(url, auth=(self.key, self.secret))
+        r = requests.get(url, auth=(self.key, self.secret), params=payload)
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
 
@@ -398,3 +417,35 @@ class ShipStation:
         )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+
+    def fetch_orders(self, parameters={}):
+        """
+            Query and fetch existing orders from ShipStation
+
+            Args:
+                parameters (dict): Dict of filters to filter by.
+
+            Raises:
+                AttributeError: parameters not of type dict
+                AttributeError: invalid key in parameters dict.
+
+            Examples:
+                >>> ss.fetch_orders(parameters={'order_status': 'shipped', 'page': '2'})
+        """
+
+        if not isinstance(parameters, dict):
+            raise AttributeError("`parameters` must be of type dict")
+
+        invalid_keys = set(parameters.keys()).difference(self.ORDER_LIST_PARAMETERS)
+
+        if invalid_keys:
+            raise AttributeError("Invalid order list parameters: {}".format(
+                ", ".join(invalid_keys)
+            ))
+
+        valid_parameters = {self.to_camel_case(key): value for key, value in parameters.items()}
+
+        self.get(
+            endpoint='/orders/list',
+            payload=valid_parameters
+        )
