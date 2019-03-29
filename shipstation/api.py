@@ -116,7 +116,6 @@ class ShipStationWeight(ShipStationBase):
             raise AttributeError('Units must not be empty and be `pounds`, `ounces` or `grams`')
 
 
-
 class ShipStationContainer(ShipStationBase):
     def __init__(self, units=None, length=None, width=None, height=None):
         self.units = units
