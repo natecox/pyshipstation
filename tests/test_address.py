@@ -38,3 +38,13 @@ class ShipStationAddressTest(unittest.TestCase):
             postal_code='12345',
             residential='something'
         )
+
+    @raises(AttributeError)
+    def test_address_must_correct_country(self):
+        ShipStationAddress(
+            street1='123 main st',
+            city='some city',
+            state='some state',
+            postal_code='12345',
+            country='America'
+        )
