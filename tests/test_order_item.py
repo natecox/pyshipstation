@@ -35,6 +35,4 @@ class ShipStationOrderItemTest(unittest.TestCase):
         self.order_item = ShipStationItem()
         self.order_item.set_weight(weight=ShipStationWeight(value=1, units='grams'))
 
-        print(self.order_item)
-
         self.assertEqual(self.order_item.weight.value, 1)
