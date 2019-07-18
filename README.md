@@ -184,3 +184,4 @@ Syntax for using a filter:
 
     ss.fetch_orders(parameters_dict={'order_status': 'shipped', 'page': '2'})
  
+ss.fetch_orders() now returns its request, meaning you can handle its output.

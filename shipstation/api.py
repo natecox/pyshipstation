@@ -405,6 +405,7 @@ class ShipStation(ShipStationBase):
         r = requests.get(url, auth=(self.key, self.secret), params=payload)
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+        return r
 
     def post(self, endpoint='', data=None):
         url = '{}{}'.format(self.url, endpoint)
@@ -445,7 +446,7 @@ class ShipStation(ShipStationBase):
 
         valid_parameters = {self.to_camel_case(key): value for key, value in parameters.items()}
 
-        self.get(
+        return self.get(
             endpoint='/orders/list',
             payload=valid_parameters
         )
