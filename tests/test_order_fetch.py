@@ -5,7 +5,7 @@ from shipstation.api import *
 
 class ShipStationApiTests(unittest.TestCase):
     def setUp(self):
-        self.ss = ShipStation('123', '456')
+        self.ss = ShipStation("123", "456")
 
     def tearDown(self):
         self.ss = None
@@ -16,4 +16,4 @@ class ShipStationApiTests(unittest.TestCase):
 
     @raises(AttributeError)
     def test_fetch_orders_must_use_correct_parameter(self):
-        self.ss.fetch_orders(parameters={'bad': 'not good'})
+        self.ss.fetch_orders(parameters={"bad": "not good"})

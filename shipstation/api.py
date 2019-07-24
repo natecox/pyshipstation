@@ -1,16 +1,16 @@
-import json
-import requests
-import pprint
 import datetime
 from decimal import Decimal
+import json
+import pprint
+import requests
 
 
 class ShipStationBase(object):
     @classmethod
     def to_camel_case(cls, name):
-        tokens = name.lower().split('_')
+        tokens = name.lower().split("_")
         first_word = tokens.pop(0)
-        return first_word + ''.join(x.title() for x in tokens)
+        return first_word + "".join(x.title() for x in tokens)
 
     def as_dict(self):
         d = dict()
@@ -26,12 +26,14 @@ class ShipStationBase(object):
 
 
 class ShipStationCustomsItem(ShipStationBase):
-    def __init__(self,
-                 description=None,
-                 quantity=1,
-                 value=Decimal('0'),
-                 harmonized_tariff_code=None,
-                 country_of_origin=None):
+    def __init__(
+        self,
+        description=None,
+        quantity=1,
+        value=Decimal("0"),
+        harmonized_tariff_code=None,
+        country_of_origin=None,
+    ):
         self.description = description
         self.quantity = quantity
         self.value = value
@@ -39,30 +41,22 @@ class ShipStationCustomsItem(ShipStationBase):
         self.country_of_origin = country_of_origin
 
         if not self.description:
-            raise AttributeError('description may not be empty')
+            raise AttributeError("description may not be empty")
         if not self.harmonized_tariff_code:
-            raise AttributeError('harmonized_tariff_code may not be empty')
+            raise AttributeError("harmonized_tariff_code may not be empty")
         if not self.country_of_origin:
-            raise AttributeError('country_of_origin may not be empty')
+            raise AttributeError("country_of_origin may not be empty")
         if len(self.country_of_origin) is not 2:
-            raise AttributeError('country_of_origin must be two characters')
+            raise AttributeError("country_of_origin must be two characters")
         if not isinstance(value, Decimal):
-            raise AttributeError('value must be decimal')
+            raise AttributeError("value must be decimal")
 
 
 class ShipStationInternationalOptions(ShipStationBase):
-    CONTENTS_VALUES = (
-        'merchandise',
-        'documents',
-        'gift',
-        'returned_goods',
-        'sample'
-    )
+    CONTENTS_VALUES = ("merchandise", "documents",
+                       "gift", "returned_goods", "sample")
 
-    NON_DELIVERY_OPTIONS = (
-        'return_to_sender',
-        'treat_as_abandoned'
-    )
+    NON_DELIVERY_OPTIONS = ("return_to_sender", "treat_as_abandoned")
 
     def __init__(self, contents=None, non_delivery=None):
         self.customs_items = []
@@ -72,7 +66,7 @@ class ShipStationInternationalOptions(ShipStationBase):
     def set_contents(self, contents):
         if contents:
             if contents not in self.CONTENTS_VALUES:
-                raise AttributeError('contents value not valid')
+                raise AttributeError("contents value not valid")
             self.contents = contents
         else:
             self.contents = None
@@ -80,7 +74,7 @@ class ShipStationInternationalOptions(ShipStationBase):
     def add_customs_item(self, customs_item):
         if customs_item:
             if not isinstance(customs_item, ShipStationCustomsItem):
-                raise AttributeError('must be of type ShipStationCustomsItem')
+                raise AttributeError("must be of type ShipStationCustomsItem")
             self.customs_items.append(customs_item)
 
     def get_items(self):
@@ -92,7 +86,7 @@ class ShipStationInternationalOptions(ShipStationBase):
     def set_non_delivery(self, non_delivery):
         if non_delivery:
             if non_delivery not in self.NON_DELIVERY_OPTIONS:
-                raise AttributeError('non_delivery value is not valid')
+                raise AttributeError("non_delivery value is not valid")
             self.non_delivery = non_delivery
         else:
             self.non_delivery = None
@@ -100,7 +94,7 @@ class ShipStationInternationalOptions(ShipStationBase):
     def as_dict(self):
         d = super(ShipStationInternationalOptions, self).as_dict()
 
-        d['customsItems'] = self.get_items_as_dicts()
+        d["customsItems"] = self.get_items_as_dicts()
 
         return d
 
@@ -121,7 +115,7 @@ class ShipStationContainer(ShipStationBase):
 
     def set_weight(self, weight):
         if type(weight) is not ShipStationWeight:
-            raise AttributeError('Should be type ShipStationWeight')
+            raise AttributeError("Should be type ShipStationWeight")
 
         self.weight = weight
 
@@ -129,15 +123,23 @@ class ShipStationContainer(ShipStationBase):
         d = super(ShipStationContainer, self).as_dict()
 
         if self.weight:
-            d['weight'] = self.weight.as_dict()
+            d["weight"] = self.weight.as_dict()
 
         return d
 
 
 class ShipStationItem(ShipStationBase):
-    def __init__(self, key=None, sku=None, name=None, image_url=None,
-                 quantity=None, unit_price=None, warehouse_location=None,
-                 options=None):
+    def __init__(
+        self,
+        key=None,
+        sku=None,
+        name=None,
+        image_url=None,
+        quantity=None,
+        unit_price=None,
+        warehouse_location=None,
+        options=None,
+    ):
         self.key = key
         self.sku = sku
         self.name = name
@@ -150,7 +152,7 @@ class ShipStationItem(ShipStationBase):
 
     def set_weight(self, weight):
         if type(weight) is not ShipStationWeight:
-            raise AttributeError('Should be type ShipStationWeight')
+            raise AttributeError("Should be type ShipStationWeight")
 
         self.weight = weight
 
@@ -158,15 +160,26 @@ class ShipStationItem(ShipStationBase):
         d = super(ShipStationItem, self).as_dict()
 
         if self.weight:
-            d['weight'] = self.weight.as_dict()
+            d["weight"] = self.weight.as_dict()
 
         return d
 
 
 class ShipStationAddress(ShipStationBase):
-    def __init__(self, name=None, company=None, street1=None, street2=None,
-                 street3=None, city=None, state=None, postal_code=None,
-                 country=None, phone=None, residential=None):
+    def __init__(
+        self,
+        name=None,
+        company=None,
+        street1=None,
+        street2=None,
+        street3=None,
+        city=None,
+        state=None,
+        postal_code=None,
+        country=None,
+        phone=None,
+        residential=None,
+    ):
         self.name = name
         self.company = company
         self.street1 = street1
@@ -186,20 +199,20 @@ class ShipStationOrder(ShipStationBase):
     """
 
     ORDER_STATUS_VALUES = (
-        'awaiting_payment',
-        'awaiting_shipment',
-        'shipped',
-        'on_hold',
-        'cancelled'
+        "awaiting_payment",
+        "awaiting_shipment",
+        "shipped",
+        "on_hold",
+        "cancelled",
     )
 
     # TODO: add method for adding confirmation which respects these values.
     CONFIRMATION_VALUES = (
-        'none',
-        'delivery',
-        'signature',
-        'adult_signature',
-        'direct_signature'
+        "none",
+        "delivery",
+        "signature",
+        "adult_signature",
+        "direct_signature",
     )
 
     def __init__(self, order_key=None, order_number=None):
@@ -217,9 +230,9 @@ class ShipStationOrder(ShipStationBase):
         self.customer_username = None
         self.customer_email = None
         self.items = []
-        self.amount_paid = Decimal('0')
-        self.tax_amount = Decimal('0')
-        self.shipping_amount = Decimal('0')
+        self.amount_paid = Decimal("0")
+        self.tax_amount = Decimal("0")
+        self.shipping_amount = Decimal("0")
         self.customer_notes = None
         self.internal_notes = None
         self.gift = None
@@ -238,7 +251,7 @@ class ShipStationOrder(ShipStationBase):
         if not status:
             self.order_status = None
         elif status not in self.ORDER_STATUS_VALUES:
-            raise AttributeError('Invalid status value')
+            raise AttributeError("Invalid status value")
         else:
             self.order_status = status
 
@@ -248,7 +261,7 @@ class ShipStationOrder(ShipStationBase):
 
     def set_shipping_address(self, shipping_address=None):
         if type(shipping_address) is not ShipStationAddress:
-            raise AttributeError('Should be type ShipStationAddress')
+            raise AttributeError("Should be type ShipStationAddress")
 
         self.ship_to = shipping_address
 
@@ -260,7 +273,7 @@ class ShipStationOrder(ShipStationBase):
 
     def set_billing_address(self, billing_address):
         if type(billing_address) is not ShipStationAddress:
-            raise AttributeError('Should be type ShipStationAddress')
+            raise AttributeError("Should be type ShipStationAddress")
 
         self.bill_to = billing_address
 
@@ -272,7 +285,7 @@ class ShipStationOrder(ShipStationBase):
 
     def set_dimensions(self, dimensions):
         if type(dimensions) is not ShipStationContainer:
-            raise AttributeError('Should be type ShipStationContainer')
+            raise AttributeError("Should be type ShipStationContainer")
 
         self.dimensions = dimensions
 
@@ -297,10 +310,7 @@ class ShipStationOrder(ShipStationBase):
         if self.dimensions and self.dimensions.weight:
             weight += self.dimensions.weight.value
 
-        return dict(
-            units='ounces',
-            value=round(weight, 2)
-        )
+        return dict(units="ounces", value=round(weight, 2))
 
     def add_item(self, item):
         """
@@ -317,8 +327,7 @@ class ShipStationOrder(ShipStationBase):
     def set_international_options(self, options):
         if not isinstance(options, ShipStationInternationalOptions):
             raise AttributeError(
-                'options should be an instance of ' +
-                'ShipStationInternationalOptions'
+                "options should be an instance of " + "ShipStationInternationalOptions"
             )
         self.international_options = options
 
@@ -331,12 +340,12 @@ class ShipStationOrder(ShipStationBase):
     def as_dict(self):
         d = super(ShipStationOrder, self).as_dict()
 
-        d['items'] = self.get_items_as_dicts()
-        d['dimensions'] = self.get_dimensions_as_dict()
-        d['billTo'] = self.get_billing_address_as_dict()
-        d['shipTo'] = self.get_shipping_address_as_dict()
-        d['weight'] = self.get_weight()
-        d['internationalOptions'] = self.get_international_options_as_dict()
+        d["items"] = self.get_items_as_dicts()
+        d["dimensions"] = self.get_dimensions_as_dict()
+        d["billTo"] = self.get_billing_address_as_dict()
+        d["shipTo"] = self.get_shipping_address_as_dict()
+        d["weight"] = self.get_weight()
+        d["internationalOptions"] = self.get_international_options_as_dict()
 
         return d
 
@@ -347,23 +356,23 @@ class ShipStation(ShipStationBase):
     """
 
     ORDER_LIST_PARAMETERS = (
-        'customer_name',
-        'item_keyword',
-        'create_date_start',
-        'create_date_end',
-        'modify_date_start',
-        'modify_date_end',
-        'order_date_start',
-        'order_date_end',
-        'order_number',
-        'order_status',
-        'payment_date_start',
-        'payment_date_end',
-        'store_id',
-        'sort_by',
-        'sort_dir',
-        'page',
-        'page_size'
+        "customer_name",
+        "item_keyword",
+        "create_date_start",
+        "create_date_end",
+        "modify_date_start",
+        "modify_date_end",
+        "order_date_start",
+        "order_date_end",
+        "order_number",
+        "order_status",
+        "payment_date_start",
+        "payment_date_end",
+        "store_id",
+        "sort_by",
+        "sort_dir",
+        "page",
+        "page_size",
     )
 
     def __init__(self, key=None, secret=None, debug=False):
@@ -373,11 +382,11 @@ class ShipStation(ShipStationBase):
         """
 
         if key is None:
-            raise AttributeError('Key must be supplied.')
+            raise AttributeError("Key must be supplied.")
         if secret is None:
-            raise AttributeError('Secret must be supplied.')
+            raise AttributeError("Secret must be supplied.")
 
-        self.url = 'https://ssapi.shipstation.com'
+        self.url = "https://ssapi.shipstation.com"
 
         self.key = key
         self.secret = secret
@@ -387,7 +396,7 @@ class ShipStation(ShipStationBase):
 
     def add_order(self, order):
         if type(order) is not ShipStationOrder:
-            raise AttributeError('Should be type ShipStationOrder')
+            raise AttributeError("Should be type ShipStationOrder")
         self.orders.append(order)
 
     def get_orders(self):
@@ -395,27 +404,21 @@ class ShipStation(ShipStationBase):
 
     def submit_orders(self):
         for order in self.orders:
-            self.post(
-                endpoint='/orders/createorder',
-                data=json.dumps(order.as_dict())
-            )
+            self.post(endpoint="/orders/createorder",
+                      data=json.dumps(order.as_dict()))
 
-    def get(self, endpoint='', payload=None):
-        url = '{}{}'.format(self.url, endpoint)
+    def get(self, endpoint="", payload=None):
+        url = "{}{}".format(self.url, endpoint)
         r = requests.get(url, auth=(self.key, self.secret), params=payload)
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
         return r
 
-    def post(self, endpoint='', data=None):
-        url = '{}{}'.format(self.url, endpoint)
-        headers = {'content-type': 'application/json'}
-        r = requests.post(
-            url,
-            auth=(self.key, self.secret),
-            data=data,
-            headers=headers
-        )
+    def post(self, endpoint="", data=None):
+        url = "{}{}".format(self.url, endpoint)
+        headers = {"content-type": "application/json"}
+        r = requests.post(url, auth=(self.key, self.secret),
+                          data=data, headers=headers)
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
 
@@ -437,14 +440,18 @@ class ShipStation(ShipStationBase):
         if not isinstance(parameters, dict):
             raise AttributeError("`parameters` must be of type dict")
 
-        invalid_keys = set(parameters.keys()).difference(self.ORDER_LIST_PARAMETERS)
+        invalid_keys = set(parameters.keys()).difference(
+            self.ORDER_LIST_PARAMETERS)
 
         if invalid_keys:
-            raise AttributeError("Invalid order list parameters: {}".format(
-                ", ".join(invalid_keys)
-            ))
+            raise AttributeError(
+                "Invalid order list parameters: {}".format(
+                    ", ".join(invalid_keys))
+            )
 
-        valid_parameters = {self.to_camel_case(key): value for key, value in parameters.items()}
+        valid_parameters = {
+            self.to_camel_case(key): value for key, value in parameters.items()
+        }
 
         return self.get(
             endpoint='/orders/list',
