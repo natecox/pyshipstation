@@ -412,6 +412,7 @@ class ShipStation(ShipStationBase):
         r = requests.get(url, auth=(self.key, self.secret), params=payload)
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
+
         return r
 
     def post(self, endpoint="", data=None):
@@ -424,7 +425,7 @@ class ShipStation(ShipStationBase):
 
     def fetch_orders(self, parameters={}):
         """
-            Query and fetch existing orders from ShipStation
+            Query, fetch, and return existing orders from ShipStation
 
             Args:
                 parameters (dict): Dict of filters to filter by.
@@ -432,6 +433,9 @@ class ShipStation(ShipStationBase):
             Raises:
                 AttributeError: parameters not of type dict
                 AttributeError: invalid key in parameters dict.
+
+            Returns:
+                A <Response [code]> object.
 
             Examples:
                 >>> ss.fetch_orders(parameters={'order_status': 'shipped', 'page': '2'})

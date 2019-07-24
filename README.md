@@ -156,9 +156,9 @@ This corresponds to the Address model in ShipStation
     )
     
 ## Get existing ShipStation Orders
-You can get existing orders from ShipStation with parameter filtering.
+You can get existing orders from ShipStation with parameter filtering, and do what you wish with the Response object returned.
  
-    ss.fetch_orders()
+    response = ss.fetch_orders()
 
 The allowed filter list is:
 
@@ -182,6 +182,6 @@ The allowed filter list is:
 
 Syntax for using a filter:
 
-    ss.fetch_orders(parameters_dict={'order_status': 'shipped', 'page': '2'})
- 
-ss.fetch_orders() now returns its request, meaning you can handle its output.
+    response = ss.fetch_orders(parameters_dict={'order_status': 'shipped', 'page': '2'})
+
+The Response object has some handy methods and attributes. For example, you can get the output in a text form with `response.text`, or in JSON with `response.json()`. Please refer to (Requests' documentation)[https://2.python-requests.org/en/master/user/quickstart/#response-content] for more details.
