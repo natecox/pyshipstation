@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/natecox/pyshipstation.svg?branch=develop)](https://travis-ci.org/natecox/pyshipstation)
+
 # Shipstation API Python Bindings
 This package provides the basic API bindings for interacting with
 [ShipStation](http://www.shipstation.com/) via Python.
@@ -152,3 +154,33 @@ This corresponds to the Address model in ShipStation
         postal_code=['zip code'],
         country='[two letter country code]'
     )
+    
+## Get existing ShipStation Orders
+You can get existing orders from ShipStation with parameter filtering.
+ 
+    ss.fetch_orders()
+
+The allowed filter list is:
+
+        customer_name,
+        item_keyword,
+        create_date_start,
+        create_date_end,
+        modify_date_start,
+        modify_date_end,
+        order_date_start,
+        order_date_end,
+        order_number,
+        order_status,
+        payment_date_start,
+        payment_date_end,
+        store_id,
+        sort_by,
+        sort_dir,
+        page,
+        page_size.
+
+Syntax for using a filter:
+
+    ss.fetch_orders(parameters_dict={'order_status': 'shipped', 'page': '2'})
+ 
