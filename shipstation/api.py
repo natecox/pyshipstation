@@ -423,6 +423,8 @@ class ShipStation(ShipStationBase):
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
 
+        return r
+
     def fetch_orders(self, parameters={}):
         """
             Query, fetch, and return existing orders from ShipStation
