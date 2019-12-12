@@ -3,6 +3,7 @@ from decimal import Decimal
 import json
 import pprint
 import requests
+from shipstation.utils import require_type
 
 
 class ShipStationBase(object):
@@ -48,8 +49,7 @@ class ShipStationCustomsItem(ShipStationBase):
             raise AttributeError("country_of_origin may not be empty")
         if len(self.country_of_origin) is not 2:
             raise AttributeError("country_of_origin must be two characters")
-        if not isinstance(value, Decimal):
-            raise AttributeError("value must be decimal")
+        require_type(value, Decimal)
 
 
 class ShipStationInternationalOptions(ShipStationBase):
@@ -72,10 +72,8 @@ class ShipStationInternationalOptions(ShipStationBase):
             self.contents = None
 
     def add_customs_item(self, customs_item):
-        if customs_item:
-            if not isinstance(customs_item, ShipStationCustomsItem):
-                raise AttributeError("must be of type ShipStationCustomsItem")
-            self.customs_items.append(customs_item)
+        require_type(customs_item, ShipStationCustomsItem)
+        self.customs_items.append(customs_item)
 
     def get_items(self):
         return self.customs_items
@@ -114,9 +112,7 @@ class ShipStationContainer(ShipStationBase):
         self.weight = None
 
     def set_weight(self, weight):
-        if type(weight) is not ShipStationWeight:
-            raise AttributeError("Should be type ShipStationWeight")
-
+        require_type(weight, ShipStationWeight)
         self.weight = weight
 
     def as_dict(self):
@@ -151,9 +147,7 @@ class ShipStationItem(ShipStationBase):
         self.options = options
 
     def set_weight(self, weight):
-        if type(weight) is not ShipStationWeight:
-            raise AttributeError("Should be type ShipStationWeight")
-
+        require_type(weight, ShipStationWeight)
         self.weight = weight
 
     def as_dict(self):
@@ -259,10 +253,8 @@ class ShipStationOrder(ShipStationBase):
         self.customer_username = username
         self.customer_email = email
 
-    def set_shipping_address(self, shipping_address=None):
-        if type(shipping_address) is not ShipStationAddress:
-            raise AttributeError("Should be type ShipStationAddress")
-
+    def set_shipping_address(self, shipping_address):
+        require_type(shipping_address, ShipStationAddress)
         self.ship_to = shipping_address
 
     def get_shipping_address_as_dict(self):
@@ -272,9 +264,7 @@ class ShipStationOrder(ShipStationBase):
             return None
 
     def set_billing_address(self, billing_address):
-        if type(billing_address) is not ShipStationAddress:
-            raise AttributeError("Should be type ShipStationAddress")
-
+        require_type(billing_address, ShipStationAddress)
         self.bill_to = billing_address
 
     def get_billing_address_as_dict(self):
@@ -284,9 +274,7 @@ class ShipStationOrder(ShipStationBase):
             return None
 
     def set_dimensions(self, dimensions):
-        if type(dimensions) is not ShipStationContainer:
-            raise AttributeError("Should be type ShipStationContainer")
-
+        require_type(dimensions, ShipStationContainer)
         self.dimensions = dimensions
 
     def get_dimensions_as_dict(self):
@@ -325,10 +313,7 @@ class ShipStationOrder(ShipStationBase):
         return [x.as_dict() for x in self.items]
 
     def set_international_options(self, options):
-        if not isinstance(options, ShipStationInternationalOptions):
-            raise AttributeError(
-                "options should be an instance of " + "ShipStationInternationalOptions"
-            )
+        require_type(options, ShipStationInternationalOptions)
         self.international_options = options
 
     def get_international_options_as_dict(self):
@@ -441,9 +426,7 @@ class ShipStation(ShipStationBase):
                 >>> ss.fetch_orders(parameters={'order_status': 'shipped', 'page': '2'})
         """
 
-        if not isinstance(parameters, dict):
-            raise AttributeError("`parameters` must be of type dict")
-
+        require_type(parameters, dict)
         invalid_keys = set(parameters.keys()).difference(
             self.ORDER_LIST_PARAMETERS)
 
