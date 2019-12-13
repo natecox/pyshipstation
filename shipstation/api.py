@@ -24,6 +24,18 @@ class ShipStationBase(object):
 
         return d
 
+    def require_attribute(self, attribute):
+        if not getattr(self, attribute):
+            raise AttributeError("'{}' is a required attribute".format(attribute))
+
+    def require_type(self, item, required_type, message=""):
+        if item is None:
+            return
+        if not isinstance(item, required_type):
+            if message:
+                raise AttributeError(message)
+            raise AttributeError("{} must be of type {}".format(item, required_type))
+
 
 class ShipStationCustomsItem(ShipStationBase):
     def __init__(
@@ -40,16 +52,12 @@ class ShipStationCustomsItem(ShipStationBase):
         self.harmonized_tariff_code = harmonized_tariff_code
         self.country_of_origin = country_of_origin
 
-        if not self.description:
-            raise AttributeError("description may not be empty")
-        if not self.harmonized_tariff_code:
-            raise AttributeError("harmonized_tariff_code may not be empty")
-        if not self.country_of_origin:
-            raise AttributeError("country_of_origin may not be empty")
+        self.require_attribute('description')
+        self.require_attribute('harmonized_tariff_code')
+        self.require_attribute('country_of_origin')
         if len(self.country_of_origin) is not 2:
             raise AttributeError("country_of_origin must be two characters")
-        if not isinstance(value, Decimal):
-            raise AttributeError("value must be decimal")
+        self.require_type(value, Decimal)
 
 
 class ShipStationInternationalOptions(ShipStationBase):
@@ -72,10 +80,8 @@ class ShipStationInternationalOptions(ShipStationBase):
             self.contents = None
 
     def add_customs_item(self, customs_item):
-        if customs_item:
-            if not isinstance(customs_item, ShipStationCustomsItem):
-                raise AttributeError("must be of type ShipStationCustomsItem")
-            self.customs_items.append(customs_item)
+        self.require_type(customs_item, ShipStationCustomsItem)
+        self.customs_items.append(customs_item)
 
     def get_items(self):
         return self.customs_items
@@ -114,9 +120,7 @@ class ShipStationContainer(ShipStationBase):
         self.weight = None
 
     def set_weight(self, weight):
-        if type(weight) is not ShipStationWeight:
-            raise AttributeError("Should be type ShipStationWeight")
-
+        self.require_type(weight, ShipStationWeight)
         self.weight = weight
 
     def as_dict(self):
@@ -151,9 +155,7 @@ class ShipStationItem(ShipStationBase):
         self.options = options
 
     def set_weight(self, weight):
-        if type(weight) is not ShipStationWeight:
-            raise AttributeError("Should be type ShipStationWeight")
-
+        self.require_type(weight, ShipStationWeight)
         self.weight = weight
 
     def as_dict(self):
@@ -259,10 +261,8 @@ class ShipStationOrder(ShipStationBase):
         self.customer_username = username
         self.customer_email = email
 
-    def set_shipping_address(self, shipping_address=None):
-        if type(shipping_address) is not ShipStationAddress:
-            raise AttributeError("Should be type ShipStationAddress")
-
+    def set_shipping_address(self, shipping_address):
+        self.require_type(shipping_address, ShipStationAddress)
         self.ship_to = shipping_address
 
     def get_shipping_address_as_dict(self):
@@ -272,9 +272,7 @@ class ShipStationOrder(ShipStationBase):
             return None
 
     def set_billing_address(self, billing_address):
-        if type(billing_address) is not ShipStationAddress:
-            raise AttributeError("Should be type ShipStationAddress")
-
+        self.require_type(billing_address, ShipStationAddress)
         self.bill_to = billing_address
 
     def get_billing_address_as_dict(self):
@@ -284,9 +282,7 @@ class ShipStationOrder(ShipStationBase):
             return None
 
     def set_dimensions(self, dimensions):
-        if type(dimensions) is not ShipStationContainer:
-            raise AttributeError("Should be type ShipStationContainer")
-
+        self.require_type(billing_address, ShipStationContainer)
         self.dimensions = dimensions
 
     def get_dimensions_as_dict(self):
@@ -325,10 +321,7 @@ class ShipStationOrder(ShipStationBase):
         return [x.as_dict() for x in self.items]
 
     def set_international_options(self, options):
-        if not isinstance(options, ShipStationInternationalOptions):
-            raise AttributeError(
-                "options should be an instance of " + "ShipStationInternationalOptions"
-            )
+        self.require_type(options, ShipStationInternationalOptions)
         self.international_options = options
 
     def get_international_options_as_dict(self):
@@ -395,8 +388,7 @@ class ShipStation(ShipStationBase):
         self.debug = debug
 
     def add_order(self, order):
-        if type(order) is not ShipStationOrder:
-            raise AttributeError("Should be type ShipStationOrder")
+        self.require_type(order, ShipStationOrder)
         self.orders.append(order)
 
     def get_orders(self):
@@ -440,10 +432,7 @@ class ShipStation(ShipStationBase):
             Examples:
                 >>> ss.fetch_orders(parameters={'order_status': 'shipped', 'page': '2'})
         """
-
-        if not isinstance(parameters, dict):
-            raise AttributeError("`parameters` must be of type dict")
-
+        self.require_type(parameters, dict)
         invalid_keys = set(parameters.keys()).difference(
             self.ORDER_LIST_PARAMETERS)
 
