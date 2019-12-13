@@ -1,5 +1,5 @@
 import unittest
-from nose.tools import raises
+import pytest
 from shipstation.api import *
 from decimal import Decimal
 
@@ -40,23 +40,23 @@ class ShipStationTests(unittest.TestCase):
 
         self.assertEqual(expected, actual)
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_customs_item_must_have_description(self):
         ShipStationCustomsItem(
             description="", harmonized_tariff_code="test", country_of_origin="us"
         )
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_customs_item_must_have_tariff_code(self):
         ShipStationCustomsItem(
             description="test", harmonized_tariff_code="", country_of_origin="us"
         )
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_customs_item_must_have_country_code(self):
         ShipStationCustomsItem(description="test", harmonized_tariff_code="test")
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_customs_item_must_have_two_character_country_code(self):
         ShipStationCustomsItem(
             description="test",
