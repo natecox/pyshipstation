@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/natecox/pyshipstation.svg?branch=develop)](https://travis-ci.org/natecox/pyshipstation)
+![](coverage.svg)
 
 # Shipstation API Python Bindings
 This package provides the basic API bindings for interacting with
@@ -154,10 +155,10 @@ This corresponds to the Address model in ShipStation
         postal_code=['zip code'],
         country='[two letter country code]'
     )
-    
+
 ## Get existing ShipStation Orders
 You can get existing orders from ShipStation with parameter filtering, and do what you wish with the Response object returned.
- 
+
     response = ss.fetch_orders()
 
 The allowed filter list is:
