@@ -53,8 +53,7 @@ class ShipStationCustomsItem(ShipStationBase):
 
 
 class ShipStationInternationalOptions(ShipStationBase):
-    CONTENTS_VALUES = ("merchandise", "documents",
-                       "gift", "returned_goods", "sample")
+    CONTENTS_VALUES = ("merchandise", "documents", "gift", "returned_goods", "sample")
 
     NON_DELIVERY_OPTIONS = ("return_to_sender", "treat_as_abandoned")
 
@@ -404,16 +403,12 @@ class ShipStation(ShipStationBase):
 
     def submit_orders(self):
         for order in self.orders:
-            self.post(endpoint="/orders/createorder",
-                      data=json.dumps(order.as_dict()))
+            self.post(endpoint="/orders/createorder", data=json.dumps(order.as_dict()))
 
     def get(self, endpoint="", payload=None):
         url = "{}{}".format(self.url, endpoint)
         r = requests.get(
-            url,
-            auth=(self.key, self.secret),
-            params=payload,
-            timeout=self.timeout
+            url, auth=(self.key, self.secret), params=payload, timeout=self.timeout
         )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
@@ -428,7 +423,22 @@ class ShipStation(ShipStationBase):
             auth=(self.key, self.secret),
             data=data,
             headers=headers,
-            timeout=self.timeout
+            timeout=self.timeout,
+        )
+        if self.debug:
+            pprint.PrettyPrinter(indent=4).pprint(r.json())
+
+        return r
+
+    def put(self, endpoint="", data=None):
+        url = "{}{}".format(self.url, endpoint)
+        headers = {"content-type": "application/json"}
+        r = requests.put(
+            url,
+            auth=(self.key, self.secret),
+            data=data,
+            headers=headers,
+            timeout=self.timeout,
         )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
@@ -456,20 +466,15 @@ class ShipStation(ShipStationBase):
         if not isinstance(parameters, dict):
             raise AttributeError("`parameters` must be of type dict")
 
-        invalid_keys = set(parameters.keys()).difference(
-            self.ORDER_LIST_PARAMETERS)
+        invalid_keys = set(parameters.keys()).difference(self.ORDER_LIST_PARAMETERS)
 
         if invalid_keys:
             raise AttributeError(
-                "Invalid order list parameters: {}".format(
-                    ", ".join(invalid_keys))
+                "Invalid order list parameters: {}".format(", ".join(invalid_keys))
             )
 
         valid_parameters = {
             self.to_camel_case(key): value for key, value in parameters.items()
         }
 
-        return self.get(
-            endpoint='/orders/list',
-            payload=valid_parameters
-        )
+        return self.get(endpoint="/orders/list", payload=valid_parameters)
