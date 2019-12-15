@@ -1,12 +1,17 @@
+<div style="text-align: center;">
+<img src="pyshipstationlogo.svg" style="width: 350px; padding: 15px;">
+</div>
+
 [![Build Status](https://travis-ci.org/natecox/pyshipstation.svg?branch=develop)](https://travis-ci.org/natecox/pyshipstation)
 ![](coverage.svg)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # Shipstation API Python Bindings
-This package provides the basic API bindings for interacting with
+This package provides API bindings for interacting with
 [ShipStation](http://www.shipstation.com/) via Python.
 
 ## Connecting to ShipStation
-pyshipstation provides the class `ShipStation` to instantiate a new connection
+`shipstation` provides the class `ShipStation` to instantiate a new connection
 to ShipStation.
 
     from shipstation.api import *
