@@ -3,8 +3,8 @@
 dist
 shipstation.egg-info
 .tox
-.coverage
+/.coverage
 .idea
 build/lib/*
-Pipfile
-Pipfile.lock
+/Pipfile
+/Pipfile.lock

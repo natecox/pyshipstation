@@ -1,8 +1,8 @@
-import unittest
-import pytest
-from shipstation.api import *
 from decimal import Decimal
-
+import pytest
+from shipstation.models import *
+from shipstation.api import ShipStation
+import unittest
 
 class ShipStationTests(unittest.TestCase):
     def setUp(self):
