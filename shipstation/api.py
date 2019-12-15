@@ -11,6 +11,7 @@ class ShipStation(ShipStationBase):
     """
     Handles the details of connecting to and querying a ShipStation account.
     """
+
     def __init__(self, key=None, secret=None, debug=False):
         """
         Connecting to ShipStation required an account and a

@@ -13,7 +13,7 @@ __all__ = [
     "UPDATE_STORE_OPTIONS",
     "SUBSCRIBE_TO_WEBHOOK_OPTIONS",
     "SUBSCRIBE_TO_WEBHOOK_EVENT_OPTIONS",
-    "WEIGHT_UNIT_OPTIONS"
+    "WEIGHT_UNIT_OPTIONS",
 ]
 
 # https://www.shipstation.com/developer-api/#/reference/orders/createupdate-order/create/update-order
