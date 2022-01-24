@@ -4,6 +4,7 @@ from shipstation.models import *
 from shipstation.api import ShipStation
 import unittest
 
+
 class ShipStationTests(unittest.TestCase):
     def setUp(self):
         self.ss = ShipStation("123", "456")
