@@ -101,6 +101,7 @@ class ShipStation(ShipStationBase):
         """
         self.require_type(parameters, dict)
         invalid_keys = set(parameters.keys()).difference(ORDER_LIST_PARAMETERS)
+
         if invalid_keys:
             raise AttributeError(
                 "Invalid order list parameters: {}".format(", ".join(invalid_keys))
