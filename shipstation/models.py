@@ -3,18 +3,18 @@ from decimal import Decimal
 import datetime
 
 __all__ = [
-    'ShipStationAddress',
-    'ShipStationAdvancedOptions',
-    'ShipStationBase',
-    'ShipStationContainer',
-    'ShipStationCustomsItem',
-    'ShipStationInsuranceOptions',
-    'ShipStationInternationalOptions',
-    'ShipStationItem',
-    'ShipStationOrder',
-    'ShipStationStatusMapping',
-    'ShipStationStore',
-    'ShipStationWeight'
+    "ShipStationAddress",
+    "ShipStationAdvancedOptions",
+    "ShipStationBase",
+    "ShipStationContainer",
+    "ShipStationCustomsItem",
+    "ShipStationInsuranceOptions",
+    "ShipStationInternationalOptions",
+    "ShipStationItem",
+    "ShipStationOrder",
+    "ShipStationStatusMapping",
+    "ShipStationStore",
+    "ShipStationWeight",
 ]
 
 
@@ -72,10 +72,10 @@ class ShipStationCustomsItem(ShipStationBase):
         self.harmonized_tariff_code = harmonized_tariff_code
         self.country_of_origin = country_of_origin
 
-        self.require_attribute('description')
-        self.require_attribute('harmonized_tariff_code')
-        self.require_attribute('country_of_origin')
-        self.require_attribute('description')
+        self.require_attribute("description")
+        self.require_attribute("harmonized_tariff_code")
+        self.require_attribute("country_of_origin")
+        self.require_attribute("description")
         self.require_type(value, Decimal)
         if len(self.country_of_origin) is not 2:
             raise AttributeError("country_of_origin must be two characters")
@@ -143,7 +143,7 @@ class ShipStationContainer(ShipStationBase):
 
     def as_dict(self):
         d = super(ShipStationContainer, self).as_dict()
-        return __setattr__(d, 'weight', self.weight.as_dict()) if self.weight else d
+        return __setattr__(d, "weight", self.weight.as_dict()) if self.weight else d
         #
         # if self.weight:
         #     d["weight"] = self.weight.as_dict()
@@ -179,7 +179,9 @@ class ShipStationItem(ShipStationBase):
 
     def as_dict(self):
         d = super(ShipStationItem, self).as_dict()
-        return __setattr__(d, 'weight', self.weight.as_dict()) if self.weight else d
+
+        return __setattr__(d, "weight", self.weight.as_dict()) if self.weight else d
+
         # if self.weight:
         #     d["weight"] = self.weight.as_dict()
         #
@@ -218,6 +220,7 @@ class ShipStationOrder(ShipStationBase):
     Accepts the data needed for an individual ShipStation order and
     contains the tools for submitting the order to ShipStation.
     """
+
     def __init__(self, order_key=None, order_number=None):
 
         # Required attributes
@@ -315,7 +318,9 @@ class ShipStationOrder(ShipStationBase):
         self.international_options = options
 
     def get_international_options_as_dict(self):
-        return self.international_options.as_dict() if self.international_options else None
+        return (
+            self.international_options.as_dict() if self.international_options else None
+        )
 
     def as_dict(self):
         d = super(ShipStationOrder, self).as_dict()
@@ -375,7 +380,7 @@ class ShipStationAdvancedOptions(ShipStationBase):
         bill_to_account=None,
         bill_to_postal_code=None,
         bill_to_country_code=None,
-        bill_to_my_other_account=None
+        bill_to_my_other_account=None,
     ):
         self.warehouse_id = warehouse_id
         self.non_machineable = non_machineable
@@ -396,25 +401,17 @@ class ShipStationAdvancedOptions(ShipStationBase):
 
 
 class ShipStationInsuranceOptions(ShipStationBase):
-    def __init__(
-        self,
-        provider=None,
-        insure_shipment=None,
-        insured_value=None
-    ):
+    def __init__(self, provider=None, insure_shipment=None, insured_value=None):
         self.provider = provider
         self.insure_shipment = insure_shipment
         self.insured_value = insured_value
 
 
 class ShipStationStatusMapping(ShipStationBase):
-    def __init__(
-        self,
-        order_status=None,
-        status_key=None
-    ):
+    def __init__(self, order_status=None, status_key=None):
         self.order_status = order_status
         self.status_key = status_key
+
 
 class ShipStationStore(ShipStationBase):
     def __init__(
@@ -435,7 +432,7 @@ class ShipStationStore(ShipStationBase):
         create_date=None,
         modify_date=None,
         auto_refresh=None,
-        status_mappings=None
+        status_mappings=None,
     ):
         self.store_id = store_id
         self.store_name = store_name
