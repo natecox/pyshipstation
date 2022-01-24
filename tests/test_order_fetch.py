@@ -1,5 +1,5 @@
 import unittest
-from nose.tools import raises
+import pytest
 from shipstation.api import *
 
 
@@ -10,10 +10,10 @@ class ShipStationApiTests(unittest.TestCase):
     def tearDown(self):
         self.ss = None
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_fetch_orders_must_be_dict(self):
         self.ss.fetch_orders(parameters="non dict")
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_fetch_orders_must_use_correct_parameter(self):
         self.ss.fetch_orders(parameters={"bad": "not good"})

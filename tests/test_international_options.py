@@ -1,5 +1,5 @@
 import unittest
-from nose.tools import raises
+import pytest
 from shipstation.api import *
 from decimal import Decimal
 
@@ -36,10 +36,10 @@ class ShipStationTests(unittest.TestCase):
 
         self.assertDictEqual(expected, actual)
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_international_options_contents_must_be_valid(self):
         self.ss_intl.set_contents("something_else")
 
-    @raises(AttributeError)
+    @pytest.mark.xfail(raises=AttributeError)
     def test_international_options_non_delivery_must_be_valid(self):
         self.ss_intl.set_non_delivery("something_else")
