@@ -384,7 +384,7 @@ class ShipStation(ShipStationBase):
         self.key = key
         self.secret = secret
         self.orders = []
-
+        self.timeout = 1.0
         self.debug = debug
 
     def add_order(self, order):
@@ -401,7 +401,12 @@ class ShipStation(ShipStationBase):
 
     def get(self, endpoint="", payload=None):
         url = "{}{}".format(self.url, endpoint)
-        r = requests.get(url, auth=(self.key, self.secret), params=payload)
+        r = requests.get(
+            url,
+            auth=(self.key, self.secret),
+            params=payload,
+            timeout=self.timeout
+        )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
 
@@ -410,8 +415,13 @@ class ShipStation(ShipStationBase):
     def post(self, endpoint="", data=None):
         url = "{}{}".format(self.url, endpoint)
         headers = {"content-type": "application/json"}
-        r = requests.post(url, auth=(self.key, self.secret),
-                          data=data, headers=headers)
+        r = requests.post(
+            url,
+            auth=(self.key, self.secret),
+            data=data,
+            headers=headers,
+            timeout=self.timeout
+        )
         if self.debug:
             pprint.PrettyPrinter(indent=4).pprint(r.json())
 
