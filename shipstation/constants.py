@@ -7,9 +7,13 @@ __all__ = [
     "SHIPMENT_LIST_PARAMETERS",
     "CREATE_SHIPMENT_LABEL_OPTIONS",
     "GET_RATE_OPTIONS",
+    "REQUIRED_RATE_OPTIONS",
     "CONTENTS_VALUES",
     "NON_DELIVERY_OPTIONS",
-    "REFRESH_STORE_OPTIONS",
+    "UPDATE_STORE_OPTIONS",
+    "SUBSCRIBE_TO_WEBHOOK_OPTIONS",
+    "SUBSCRIBE_TO_WEBHOOK_EVENT_OPTIONS",
+    "WEIGHT_UNIT_OPTIONS"
 ]
 
 # https://www.shipstation.com/developer-api/#/reference/orders/createupdate-order/create/update-order
@@ -139,6 +143,15 @@ GET_RATE_OPTIONS = (
     "residential",
 )
 
+REQUIRED_RATE_OPTIONS = (
+    "carrier_code",
+    "from_postal_code",
+    "to_state",
+    "to_country",
+    "to_postal_code",
+    "weight",
+)
+
 # https://www.shipstation.com/developer-api/#/reference/model-internationaloptions
 CONTENTS_VALUES = ("merchandise", "documents", "gift", "returned_goods", "sample")
 
@@ -166,3 +179,18 @@ UPDATE_STORE_OPTIONS = (
     "auto_refresh",
     "status_mappings",
 )
+
+# https://www.shipstation.com/developer-api/#/reference/webhooks/subscribe-to-webhook/subscribe-to-webhook
+SUBSCRIBE_TO_WEBHOOK_OPTIONS = ("target_url", "event", "store_id", "friendly_name")
+
+# https://www.shipstation.com/developer-api/#/reference/webhooks/subscribe-to-webhook/subscribe-to-webhook
+SUBSCRIBE_TO_WEBHOOK_EVENT_OPTIONS = (
+    "ORDER_NOTIFY",
+    "ITEM_ORDER_NOTIFY",
+    "SHIP_NOTIFY",
+    "ITEM_SHIP_NOTIFY",
+)
+
+WEIGHT_UNIT_OPTIONS = ("pounds", "ounces", "grams")
+
+DIMENSIONS_UNIT_OPTIONS = ("inches", "centimeters")

@@ -1,6 +1,7 @@
-import unittest
 import pytest
-from shipstation.api import *
+from shipstation.models import *
+from shipstation.api import ShipStation
+import unittest
 
 
 class ShipStationApiTests(unittest.TestCase):
